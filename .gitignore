@@ -1,0 +1,6 @@
+.build/
+.build-before-move/
+build/
+Vendor/7zip/CPP/7zip/Bundles/Alone2/b/
+.DS_Store
+*.xcuserstate

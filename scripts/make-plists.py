@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+import plistlib
+from pathlib import Path
+root = Path(__file__).resolve().parent.parent
+archive_extensions = ['7z','zip','rar','tar','gz','gzip','tgz','bz2','bzip2','tbz2','xz','txz','lzma','zst','cab','iso','wim','arj','cpio','rpm','deb','dmg','vhd','vhdx','001']
+exported = [('org.7-zip.7-zip-archive','7-Zip archive',['7z']), ('local.sevenzip.archive','Archive', [x for x in archive_extensions if x != '7z'])]
+actions = [('open','Open'),('add','Add to archive…'),('quick7z','Compress to 7z'),('quickZip','Compress to ZIP'),('extract','Extract…'),('extractHere','Extract here'),('extractFolder','Extract to folder'),('test','Test archive'),('hash','Checksums…'),('email','Compress and email…')]
+info = dict(CFBundleName='7zip Mac', CFBundleDisplayName='7zip Mac', CFBundleIdentifier='local.sevenzip.mac', CFBundleExecutable='SevenZipMac', CFBundlePackageType='APPL', CFBundleShortVersionString='26.04.2', CFBundleVersion='2', LSMinimumSystemVersion='13.0', NSPrincipalClass='NSApplication', CFBundleIconFile='AppIcon', NSHighResolutionCapable=True, CFBundleDevelopmentRegion='zh-Hans', CFBundleLocalizations=['zh-Hans','zh-Hant','en'], NSHumanReadableCopyright='Independent GUI; 7-Zip © Igor Pavlov. See bundled licenses.', CFBundleURLTypes=[dict(CFBundleURLName='7zip actions',CFBundleURLSchemes=['sevenzipmac'])])
+info['CFBundleDocumentTypes'] = [dict(CFBundleTypeName='Archives',CFBundleTypeRole='Viewer',LSHandlerRank='Alternate',CFBundleTypeExtensions=archive_extensions,LSItemContentTypes=['org.7-zip.7-zip-archive','local.sevenzip.archive','public.zip-archive','public.tar-archive','org.rarlab.rar-archive','org.gnu.gnu-zip-archive','public.bzip2-archive','public.xz-archive','com.apple.disk-image'])]
+info['UTExportedTypeDeclarations'] = [dict(UTTypeIdentifier=uti, UTTypeDescription=name, UTTypeConformsTo=['public.data','public.archive'],UTTypeTagSpecification={'public.filename-extension':exts}) for uti,name,exts in exported]
+chinese = dict(open='打开',add='添加到压缩包…',quick7z='压缩为 7z',quickZip='压缩为 ZIP',extract='解压…',extractHere='解压到当前位置',extractFolder='解压到同名文件夹',test='测试压缩包',hash='校验和…',email='压缩并通过邮件分享…')
+traditional = dict(open='開啟',add='新增至壓縮檔…',quick7z='壓縮為 7z',quickZip='壓縮為 ZIP',extract='解壓縮…',extractHere='解壓縮至目前位置',extractFolder='解壓縮至同名資料夾',test='測試壓縮檔',hash='校驗和…',email='壓縮並透過郵件分享…')
+info['NSServices'] = [dict(NSMenuItem={'default':f'7zip — {title}', 'zh-Hans':f'7zip — {chinese[action]}', 'zh-Hant':f'7zip — {traditional[action]}', 'en':f'7zip — {title}'},NSMessage='performAction',NSPortName='7zip',NSUserData=action,NSSendTypes=['public.file-url','NSFilenamesPboardType'],NSRequiredContext={},NSTimeout='30000') for action,title in actions]
+with (root/'Resources/Info.plist').open('wb') as f: plistlib.dump(info,f)
+ext = dict(CFBundleName='7zip',CFBundleDisplayName='7zip',CFBundleDevelopmentRegion='zh-Hans',CFBundleLocalizations=['zh-Hans','zh-Hant','en'],CFBundleIdentifier='local.sevenzip.mac.finder',CFBundleExecutable='SevenZipFinder',CFBundlePackageType='XPC!',CFBundleShortVersionString='26.04.2',CFBundleVersion='2',LSMinimumSystemVersion='13.0',NSExtension={'NSExtensionPointIdentifier':'com.apple.FinderSync','NSExtensionPrincipalClass':'SevenZipFinderSync'})
+with (root/'FinderExtension/Info.plist').open('wb') as f: plistlib.dump(ext,f)

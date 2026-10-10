@@ -1,0 +1,15 @@
+7zip Mac is an independent native macOS GUI, not an official 7-Zip release.
+The archive engine is built from the unmodified native macOS sources of
+7-Zip 26.04. Copyright (C) 1999-2026 Igor Pavlov.
+See License.txt and MANUAL/general/license.htm for the LGPL, BSD and unRAR terms.
+The supplied upstream engine is preserved byte-for-byte in Upstream/7zz.
+The runnable Resources/7zz is compiled from the official repository and
+receives a local ad-hoc code signature for macOS. Build provenance is
+recorded in Upstream/SOURCE.txt.
+No Developer ID signature, notarization, or Apple distribution approval is claimed.
+Finder Services are the supported integration. Finder Sync is optional and
+Apple scopes that API to synchronization apps; activation is not guaranteed.
+https://www.7-zip.org/
+https://github.com/ip7z/7zip
+https://github.com/ip7z/7zip/tree/26.04
+https://developer.apple.com/documentation/FinderSync
